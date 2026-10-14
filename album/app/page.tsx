@@ -1,70 +1,224 @@
+"use client";
+
+import React, { useState } from "react";
+import { SAMPLE_SPREADS } from "@/data/pages";
+import { TEMPLATE_LAYOUTS } from "@/config/layouts";
+import { PhotoItem, TemplateName } from "@/types";
+import { SpreadCanvas } from "@/components/SpreadCanvas";
+
 export default function HomePage() {
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateName>("single-spotlight");
+  const [viewMode, setViewMode] = useState<"full" | "left" | "right" | "split">("full");
+  const [activeModalPhoto, setActiveModalPhoto] = useState<PhotoItem | null>(null);
+
+  // Find the sample spread matching the selected template
+  const currentSpread =
+    SAMPLE_SPREADS.find((s) => s.template === selectedTemplate) || SAMPLE_SPREADS[1];
+  const templateInfo = TEMPLATE_LAYOUTS[selectedTemplate];
+
+  const templatesList: TemplateName[] = [
+    "cover",
+    "single-spotlight",
+    "duo-classic",
+    "trio-story",
+    "quad-grid",
+    "five-collage",
+    "six-scrapbook",
+    "panoramic-spread",
+    "polaroid-scatter",
+    "memory-timeline",
+    "letter-and-moments",
+    "back-cover",
+  ];
+
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-6 sm:p-12">
-      {/* Theme Verification Container */}
-      <div className="w-full max-w-2xl flex flex-col items-center gap-8">
-        {/* Leather Cover Preview Badge */}
-        <div className="w-full bg-cover border border-cover-accent/30 rounded-cover p-8 shadow-book flex flex-col items-center text-center relative overflow-hidden">
-          <div className="absolute inset-2 border border-cover-accent/20 rounded-cover pointer-events-none" />
-          <span className="text-xs uppercase tracking-widest text-cover-accent/70 font-body mb-2">
-            The Keepsake Collection
-          </span>
-          <h1 className="font-title text-3xl sm:text-4xl text-cover-accent font-bold tracking-tight">
-            Birthday Photo Album
+    <main className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-8">
+      {/* Top Header & Phase 3 Status */}
+      <header className="w-full max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-mono text-xs uppercase tracking-wider text-cover-accent">
+              Phase 3: Page Renderer Verification
+            </span>
+          </div>
+          <h1 className="font-title text-2xl sm:text-3xl font-bold text-cover-accent">
+            {templateInfo.title}
           </h1>
-          <p className="font-hand text-xl sm:text-2xl text-accent mt-3">
-            Handcrafted with timeless memories & love
+          <p className="font-body text-xs sm:text-sm text-stone-400 mt-0.5">
+            {templateInfo.description}
           </p>
         </div>
 
-        {/* Paper Page Preview Card */}
-        <div className="w-full paper-surface rounded-page p-8 sm:p-10 shadow-photo border border-paper-edge relative text-ink">
-          {/* Decorative Tape */}
-          <div className="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-6 rounded-sm rotate-[-1.5deg]" />
+        {/* View Mode Toggle */}
+        <div className="flex items-center bg-stone-900/90 border border-stone-800 rounded-lg p-1 text-xs">
+          <button
+            onClick={() => setViewMode("full")}
+            className={`px-3 py-1.5 rounded-md font-medium transition-colors ${
+              viewMode === "full"
+                ? "bg-accent text-white shadow-sm"
+                : "text-stone-400 hover:text-white"
+            }`}
+          >
+            Full Spread
+          </button>
+          <button
+            onClick={() => setViewMode("split")}
+            className={`px-3 py-1.5 rounded-md font-medium transition-colors ${
+              viewMode === "split"
+                ? "bg-accent text-white shadow-sm"
+                : "text-stone-400 hover:text-white"
+            }`}
+          >
+            Split (Left + Right)
+          </button>
+          <button
+            onClick={() => setViewMode("left")}
+            className={`px-3 py-1.5 rounded-md font-medium transition-colors ${
+              viewMode === "left"
+                ? "bg-accent text-white shadow-sm"
+                : "text-stone-400 hover:text-white"
+            }`}
+          >
+            Left Page
+          </button>
+          <button
+            onClick={() => setViewMode("right")}
+            className={`px-3 py-1.5 rounded-md font-medium transition-colors ${
+              viewMode === "right"
+                ? "bg-accent text-white shadow-sm"
+                : "text-stone-400 hover:text-white"
+            }`}
+          >
+            Right Page
+          </button>
+        </div>
+      </header>
 
-          <div className="flex flex-col gap-4">
-            <h2 className="font-title text-2xl font-bold text-ink">
-              Phase 1: Theme System Active
-            </h2>
-            <p className="font-body text-ink-muted leading-relaxed">
-              All tokens are unified in <code className="text-accent font-mono text-sm bg-accent-soft px-1.5 py-0.5 rounded">app/theme.css</code> and mapped to Tailwind utilities:
-            </p>
+      {/* Main Canvas Display Area */}
+      <section className="w-full max-w-6xl flex flex-col items-center justify-center my-auto py-2">
+        {viewMode === "full" && (
+          <div className="w-full max-w-4xl shadow-book rounded-page overflow-hidden">
+            <SpreadCanvas
+              spread={currentSpread}
+              side="full"
+              onPhotoClick={setActiveModalPhoto}
+            />
+          </div>
+        )}
 
-            {/* Token Swatches */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-2 text-xs font-medium">
-              <div className="p-3 rounded bg-cover text-cover-accent flex flex-col gap-1 items-center justify-center text-center shadow-sm">
-                <span>--color-cover</span>
-                <span className="opacity-70 text-[10px]">#261B17</span>
-              </div>
-              <div className="p-3 rounded bg-paper text-ink border border-paper-edge flex flex-col gap-1 items-center justify-center text-center shadow-sm">
-                <span>--color-paper</span>
-                <span className="opacity-70 text-[10px]">#FAF6EE</span>
-              </div>
-              <div className="p-3 rounded bg-accent text-paper flex flex-col gap-1 items-center justify-center text-center shadow-sm">
-                <span>--color-accent</span>
-                <span className="opacity-70 text-[10px]">#C8644E</span>
-              </div>
-              <div className="p-3 rounded bg-tape text-ink border border-tape-border flex flex-col gap-1 items-center justify-center text-center shadow-sm">
-                <span>--color-tape</span>
-                <span className="opacity-70 text-[10px]">Washi Paper</span>
-              </div>
+        {viewMode === "split" && (
+          <div className="w-full max-w-4xl flex items-center justify-center shadow-book rounded-page overflow-hidden">
+            <div className="w-1/2 aspect-square">
+              <SpreadCanvas
+                spread={currentSpread}
+                side="left"
+                pageNumber={currentSpread.spreadIndex * 2}
+                onPhotoClick={setActiveModalPhoto}
+              />
             </div>
-
-            {/* Typography Preview */}
-            <div className="border-t border-paper-edge pt-4 flex flex-col gap-2">
-              <p className="font-title text-lg font-semibold text-ink">
-                Title Font: Playfair Display (Serif Elegance)
-              </p>
-              <p className="font-body text-sm text-ink-muted">
-                Body Font: Plus Jakarta Sans (Clean, Modern, Legible)
-              </p>
-              <p className="font-hand text-2xl text-accent">
-                Handwritten Font: Caveat (Personal handwritten notes & stickers)
-              </p>
+            <div className="w-1/2 aspect-square">
+              <SpreadCanvas
+                spread={currentSpread}
+                side="right"
+                pageNumber={currentSpread.spreadIndex * 2 + 1}
+                onPhotoClick={setActiveModalPhoto}
+              />
             </div>
           </div>
+        )}
+
+        {viewMode === "left" && (
+          <div className="w-full max-w-md aspect-square shadow-book rounded-page overflow-hidden">
+            <SpreadCanvas
+              spread={currentSpread}
+              side="left"
+              pageNumber={currentSpread.spreadIndex * 2}
+              onPhotoClick={setActiveModalPhoto}
+            />
+          </div>
+        )}
+
+        {viewMode === "right" && (
+          <div className="w-full max-w-md aspect-square shadow-book rounded-page overflow-hidden">
+            <SpreadCanvas
+              spread={currentSpread}
+              side="right"
+              pageNumber={currentSpread.spreadIndex * 2 + 1}
+              onPhotoClick={setActiveModalPhoto}
+            />
+          </div>
+        )}
+      </section>
+
+      {/* Template Selector Carousel */}
+      <footer className="w-full max-w-6xl mt-8">
+        <div className="text-center mb-3">
+          <span className="font-mono text-xs uppercase tracking-widest text-stone-500">
+            Select Template ({templatesList.indexOf(selectedTemplate) + 1} of {templatesList.length})
+          </span>
         </div>
-      </div>
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-stone-800">
+          {templatesList.map((tmpl) => {
+            const isSelected = selectedTemplate === tmpl;
+            const info = TEMPLATE_LAYOUTS[tmpl];
+            return (
+              <button
+                key={tmpl}
+                onClick={() => setSelectedTemplate(tmpl)}
+                className={`shrink-0 px-3.5 py-2 rounded-lg text-xs font-medium border transition-all text-left flex flex-col gap-0.5 ${
+                  isSelected
+                    ? "bg-stone-800 border-cover-accent text-white shadow-md scale-105"
+                    : "bg-stone-950/80 border-stone-800/80 text-stone-400 hover:text-stone-200 hover:border-stone-700"
+                }`}
+              >
+                <span className="font-semibold">{info.title}</span>
+                <span className="text-[10px] opacity-60 truncate max-w-[120px]">
+                  {tmpl}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </footer>
+
+      {/* Photo Preview Modal */}
+      {activeModalPhoto && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setActiveModalPhoto(null)}
+        >
+          <div
+            className="bg-paper text-ink p-4 sm:p-6 rounded-page shadow-book max-w-xl w-full relative flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setActiveModalPhoto(null)}
+              className="absolute top-3 right-3 text-ink-muted hover:text-ink text-xl font-bold w-8 h-8 rounded-full bg-stone-200/60 flex items-center justify-center"
+            >
+              ×
+            </button>
+            <div className="relative w-full aspect-4/3 rounded-xs overflow-hidden shadow-photo bg-stone-100">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={activeModalPhoto.src}
+                alt={activeModalPhoto.alt}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {activeModalPhoto.caption && (
+              <p className="font-hand text-2xl text-accent mt-4 text-center">
+                {activeModalPhoto.caption}
+              </p>
+            )}
+            {activeModalPhoto.location && (
+              <p className="font-mono text-xs text-ink-muted mt-1 uppercase tracking-wider">
+                📍 {activeModalPhoto.location} {activeModalPhoto.date ? `• ${activeModalPhoto.date}` : ""}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </main>
   );
 }
