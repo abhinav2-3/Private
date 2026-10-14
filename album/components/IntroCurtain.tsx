@@ -44,7 +44,7 @@ export const IntroCurtain: React.FC<IntroCurtainProps> = ({ onOpen }) => {
         <div className="absolute inset-3 border border-cover-accent/20 rounded-cover pointer-events-none" />
 
         {/* Small Wax Seal Badge */}
-        <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-700 via-amber-500 to-amber-200 border-2 border-amber-900/40 shadow-md flex items-center justify-center mb-6">
+        <div className="w-12 h-12 rounded-full bg-linear-to-tr from-amber-700 via-amber-500 to-amber-200 border-2 border-amber-900/40 shadow-md flex items-center justify-center mb-6">
           <span className="font-title text-stone-900 font-bold text-lg select-none">
             ✦
           </span>
@@ -65,7 +65,7 @@ export const IntroCurtain: React.FC<IntroCurtainProps> = ({ onOpen }) => {
         {/* "Open the Book" Button */}
         <button
           onClick={handleOpenClick}
-          className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-cover-accent via-amber-200 to-cover-accent text-stone-950 font-semibold shadow-lg hover:shadow-cover-accent/30 hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base cursor-pointer"
+          className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-linear-to-r from-cover-accent via-amber-200 to-cover-accent text-stone-950 font-semibold shadow-lg hover:shadow-cover-accent/30 hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base cursor-pointer"
         >
           <span className="text-base group-hover:rotate-12 transition-transform">
             📖

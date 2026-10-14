@@ -31,21 +31,21 @@ export const PhotoSlot: React.FC<PhotoSlotProps> = ({
     switch (slot.tape) {
       case "top":
         return (
-          <div className="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-16 sm:w-20 h-5 sm:h-6 rounded-xs z-20 pointer-events-none rotate-[-1deg]" />
+          <div className="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-16 sm:w-20 h-5 sm:h-6 rounded-xs z-20 pointer-events-none -rotate-1" />
         );
       case "top-left":
         return (
-          <div className="washi-tape absolute -top-2 -left-3 w-14 sm:w-16 h-5 rounded-xs z-20 pointer-events-none rotate-[-30deg]" />
+          <div className="washi-tape absolute -top-2 -left-3 w-14 sm:w-16 h-5 rounded-xs z-20 pointer-events-none -rotate-30" />
         );
       case "top-right":
         return (
-          <div className="washi-tape absolute -top-2 -right-3 w-14 sm:w-16 h-5 rounded-xs z-20 pointer-events-none rotate-[30deg]" />
+          <div className="washi-tape absolute -top-2 -right-3 w-14 sm:w-16 h-5 rounded-xs z-20 pointer-events-none rotate-30" />
         );
       case "both-corners":
         return (
           <>
-            <div className="washi-tape absolute -top-2 -left-3 w-12 sm:w-14 h-5 rounded-xs z-20 pointer-events-none rotate-[-30deg]" />
-            <div className="washi-tape absolute -top-2 -right-3 w-12 sm:w-14 h-5 rounded-xs z-20 pointer-events-none rotate-[30deg]" />
+            <div className="washi-tape absolute -top-2 -left-3 w-12 sm:w-14 h-5 rounded-xs z-20 pointer-events-none -rotate-30" />
+            <div className="washi-tape absolute -top-2 -right-3 w-12 sm:w-14 h-5 rounded-xs z-20 pointer-events-none rotate-30" />
           </>
         );
       case "none":
@@ -72,11 +72,10 @@ export const PhotoSlot: React.FC<PhotoSlotProps> = ({
 
       {/* Frame Container */}
       <div
-        className={`w-full h-full flex flex-col p-1.5 sm:p-2.5 transition-shadow duration-300 relative overflow-hidden ${
-          isCover
+        className={`w-full h-full flex flex-col p-1.5 sm:p-2.5 transition-shadow duration-300 relative overflow-hidden ${isCover
             ? "bg-cover border-2 border-cover-accent/60 shadow-book rounded-cover"
             : "bg-white photo-card rounded-page"
-        }`}
+          }`}
       >
         {/* Photo Container */}
         <div className="relative w-full flex-1 min-h-0 bg-stone-100 overflow-hidden rounded-xs">
@@ -93,9 +92,8 @@ export const PhotoSlot: React.FC<PhotoSlotProps> = ({
                 alt={photo.alt || "Album photo"}
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
-                className={`object-cover transition-all duration-500 group-hover:scale-105 ${
-                  imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"
-                }`}
+                className={`object-cover transition-all duration-500 group-hover:scale-105 ${imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                  }`}
                 onLoad={() => setImageLoaded(true)}
               />
             </>

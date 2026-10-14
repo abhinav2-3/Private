@@ -43,9 +43,8 @@ export const SpreadCanvas: React.FC<SpreadCanvasProps> = ({
   // Render the inner 200x100 coordinate canvas
   const renderCanvasContent = () => (
     <div
-      className={`relative w-full h-full select-none ${
-        isLeather ? "bg-cover" : "paper-surface"
-      }`}
+      className={`relative w-full h-full select-none ${isLeather ? "bg-cover" : "paper-surface"
+        }`}
     >
       {/* Decorative Leather Embossed Borders for Cover */}
       {isLeather && (
@@ -71,8 +70,18 @@ export const SpreadCanvas: React.FC<SpreadCanvasProps> = ({
       )}
 
       {/* Photo Slots */}
-      {layout.slots.map((slot) => {
-        const photo = spread.photos.find((p) => p.slotId === slot.id);
+      {layout.slots.map((baseSlot) => {
+        const photo = spread.photos.find((p) => p.slotId === baseSlot.id);
+        const slot = photo
+          ? {
+              ...baseSlot,
+              width: photo.width ?? baseSlot.width,
+              height: photo.height ?? baseSlot.height,
+              x: photo.x ?? baseSlot.x,
+              y: photo.y ?? baseSlot.y,
+              rotation: photo.rotation ?? baseSlot.rotation,
+            }
+          : baseSlot;
         return (
           <PhotoSlot
             key={slot.id}
@@ -100,7 +109,7 @@ export const SpreadCanvas: React.FC<SpreadCanvasProps> = ({
   if (side === "full") {
     return (
       <div
-        className={`relative w-full aspect-[2/1] rounded-page overflow-hidden shadow-book border border-paper-edge ${className}`}
+        className={`relative w-full aspect-2/1 rounded-page overflow-hidden shadow-book border border-paper-edge ${className}`}
       >
         {renderCanvasContent()}
       </div>
@@ -111,9 +120,8 @@ export const SpreadCanvas: React.FC<SpreadCanvasProps> = ({
   if (side === "left") {
     return (
       <div
-        className={`relative w-full h-full overflow-hidden ${
-          isLeather ? "rounded-l-cover" : "rounded-l-page border-l border-y border-paper-edge"
-        } ${className}`}
+        className={`relative w-full h-full overflow-hidden ${isLeather ? "rounded-l-cover" : "rounded-l-page border-l border-y border-paper-edge"
+          } ${className}`}
       >
         {/* Inner spread shifted to show left half */}
         <div className="absolute top-0 bottom-0 left-0 w-[200%] h-full">
@@ -144,12 +152,11 @@ export const SpreadCanvas: React.FC<SpreadCanvasProps> = ({
   // Clipped to Right Page (shows X: 100 to 200)
   return (
     <div
-      className={`relative w-full h-full overflow-hidden ${
-        isLeather ? "rounded-r-cover" : "rounded-r-page border-r border-y border-paper-edge"
-      } ${className}`}
+      className={`relative w-full h-full overflow-hidden ${isLeather ? "rounded-r-cover" : "rounded-r-page border-r border-y border-paper-edge"
+        } ${className}`}
     >
       {/* Inner spread shifted left by 100% to show right half */}
-      <div className="absolute top-0 bottom-0 -left-[100%] w-[200%] h-full">
+      <div className="absolute top-0 bottom-0 -left-full w-[200%] h-full">
         {renderCanvasContent()}
       </div>
 

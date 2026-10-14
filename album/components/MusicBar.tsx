@@ -37,7 +37,7 @@ export const MusicBar: React.FC<MusicBarProps> = ({
       </button>
 
       {/* Track Title & Animated Equalizer */}
-      <div className="flex items-center gap-2 px-1 max-w-[130px] sm:max-w-[180px]">
+      <div className="flex items-center gap-2 px-1 max-w-32.5 sm:max-w-45">
         <Music className="w-3 h-3 text-cover-accent shrink-0" />
         <span className="font-body text-xs text-stone-300 truncate font-medium">
           {siteConfig.music.title}

@@ -92,7 +92,7 @@ export const ImageModal: React.FC<ImageModalProps> = ({
         )}
 
         {/* High-Res Photo Container */}
-        <div className="relative w-full aspect-[4/3] rounded-xs overflow-hidden shadow-photo bg-stone-100">
+        <div className="relative w-full aspect-4/3 rounded-xs overflow-hidden shadow-photo bg-stone-100">
           <Image
             src={photo.src}
             alt={photo.alt || "Album photo"}

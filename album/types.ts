@@ -82,6 +82,11 @@ export interface PhotoItem {
   caption?: string;
   date?: string;
   location?: string;
+  width?: number; // override slot width (percent on 200 scale)
+  height?: number; // override slot height (percent on 100 scale)
+  x?: number; // override slot x position
+  y?: number; // override slot y position
+  rotation?: number; // override slot rotation angle
 }
 
 export interface SpreadData {

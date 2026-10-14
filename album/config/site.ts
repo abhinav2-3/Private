@@ -1,7 +1,7 @@
 import { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
-  recipientName: "Sophia",
+  recipientName: "Betu",
   senderName: "Abhinav",
   albumTitle: "Happy Birthday, My Love",
   subtitle: "A Keepsake Collection of Captured Moments",
