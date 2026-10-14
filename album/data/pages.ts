@@ -65,6 +65,10 @@ export const SAMPLE_SPREADS: SpreadData[] = [
         caption: "Golden hour at the cliffs — you smiled and the world stopped.",
         date: "July 2025",
         location: "Big Sur, CA",
+        width: 76,
+        height: 84,
+        x: 112,
+        y: 8,
       },
     ],
     texts: [

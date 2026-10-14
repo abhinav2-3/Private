@@ -53,10 +53,10 @@ export const TEMPLATE_LAYOUTS: Record<TemplateName, TemplateLayout> = {
     slots: [
       {
         id: "hero-photo",
-        x: 120,
-        y: 14,
-        width: 60,
-        height: 72,
+        x: 112,
+        y: 8,
+        width: 76,
+        height: 84,
         rotation: 1.5,
         tape: "top",
         aspectRatio: "portrait",
