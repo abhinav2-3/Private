@@ -1,69 +1,70 @@
-import Image from "next/image";
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="flex-1 flex flex-col items-center justify-center p-6 sm:p-12">
+      {/* Theme Verification Container */}
+      <div className="w-full max-w-2xl flex flex-col items-center gap-8">
+        {/* Leather Cover Preview Badge */}
+        <div className="w-full bg-cover border border-cover-accent/30 rounded-cover p-8 shadow-book flex flex-col items-center text-center relative overflow-hidden">
+          <div className="absolute inset-2 border border-cover-accent/20 rounded-cover pointer-events-none" />
+          <span className="text-xs uppercase tracking-widest text-cover-accent/70 font-body mb-2">
+            The Keepsake Collection
+          </span>
+          <h1 className="font-title text-3xl sm:text-4xl text-cover-accent font-bold tracking-tight">
+            Birthday Photo Album
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="font-hand text-xl sm:text-2xl text-accent mt-3">
+            Handcrafted with timeless memories & love
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Paper Page Preview Card */}
+        <div className="w-full paper-surface rounded-page p-8 sm:p-10 shadow-photo border border-paper-edge relative text-ink">
+          {/* Decorative Tape */}
+          <div className="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-6 rounded-sm rotate-[-1.5deg]" />
+
+          <div className="flex flex-col gap-4">
+            <h2 className="font-title text-2xl font-bold text-ink">
+              Phase 1: Theme System Active
+            </h2>
+            <p className="font-body text-ink-muted leading-relaxed">
+              All tokens are unified in <code className="text-accent font-mono text-sm bg-accent-soft px-1.5 py-0.5 rounded">app/theme.css</code> and mapped to Tailwind utilities:
+            </p>
+
+            {/* Token Swatches */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-2 text-xs font-medium">
+              <div className="p-3 rounded bg-cover text-cover-accent flex flex-col gap-1 items-center justify-center text-center shadow-sm">
+                <span>--color-cover</span>
+                <span className="opacity-70 text-[10px]">#261B17</span>
+              </div>
+              <div className="p-3 rounded bg-paper text-ink border border-paper-edge flex flex-col gap-1 items-center justify-center text-center shadow-sm">
+                <span>--color-paper</span>
+                <span className="opacity-70 text-[10px]">#FAF6EE</span>
+              </div>
+              <div className="p-3 rounded bg-accent text-paper flex flex-col gap-1 items-center justify-center text-center shadow-sm">
+                <span>--color-accent</span>
+                <span className="opacity-70 text-[10px]">#C8644E</span>
+              </div>
+              <div className="p-3 rounded bg-tape text-ink border border-tape-border flex flex-col gap-1 items-center justify-center text-center shadow-sm">
+                <span>--color-tape</span>
+                <span className="opacity-70 text-[10px]">Washi Paper</span>
+              </div>
+            </div>
+
+            {/* Typography Preview */}
+            <div className="border-t border-paper-edge pt-4 flex flex-col gap-2">
+              <p className="font-title text-lg font-semibold text-ink">
+                Title Font: Playfair Display (Serif Elegance)
+              </p>
+              <p className="font-body text-sm text-ink-muted">
+                Body Font: Plus Jakarta Sans (Clean, Modern, Legible)
+              </p>
+              <p className="font-hand text-2xl text-accent">
+                Handwritten Font: Caveat (Personal handwritten notes & stickers)
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }

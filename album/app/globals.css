@@ -1,26 +1,64 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "./theme.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-cover: var(--color-cover);
+  --color-cover-dark: var(--color-cover-dark);
+  --color-cover-accent: var(--color-cover-accent);
+  --color-paper: var(--color-paper);
+  --color-paper-edge: var(--color-paper-edge);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-tape: var(--color-tape);
+  --color-tape-border: var(--color-tape-border);
+  --color-bg: var(--color-bg);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-title: var(--font-title);
+  --font-body: var(--font-body);
+  --font-hand: var(--font-hand);
+
+  --radius-page: var(--page-radius);
+  --radius-cover: var(--cover-radius);
+  --shadow-photo: var(--photo-shadow);
+  --shadow-book: var(--book-shadow);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  background-image: var(--color-bg-ambient);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrapbook Paper Texture Utility */
+.paper-surface {
+  background-color: var(--color-paper);
+  background-size: 24px 24px;
+  background-image: var(--paper-texture);
+}
+
+/* Washi Tape Accent */
+.washi-tape {
+  background-color: var(--color-tape);
+  border: 1px dashed var(--color-tape-border);
+  backdrop-filter: blur(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Photo Polaroid Card */
+.photo-card {
+  border: var(--photo-border);
+  box-shadow: var(--photo-shadow);
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.photo-card:hover {
+  box-shadow: 0 14px 28px -4px rgba(38, 27, 23, 0.3), 0 6px 12px -2px rgba(38, 27, 23, 0.18);
 }

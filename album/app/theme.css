@@ -1,0 +1,32 @@
+:root {
+  /* Colors - Single source of truth */
+  --color-cover: #261b17;
+  --color-cover-dark: #1b120f;
+  --color-cover-accent: #cfa858;
+  --color-paper: #faf6ee;
+  --color-paper-edge: #e6decb;
+  --color-ink: #2b2520;
+  --color-ink-muted: #6b6257;
+  --color-accent: #c8644e;
+  --color-accent-soft: #f7ebe6;
+  --color-tape: rgba(246, 237, 218, 0.85);
+  --color-tape-border: rgba(214, 200, 175, 0.6);
+  --color-bg: #141110;
+  --color-bg-ambient: radial-gradient(circle at 50% 50%, #241c19 0%, #110e0d 100%);
+
+  /* Fonts */
+  --font-title: var(--font-title-font, "Playfair Display", Georgia, "Times New Roman", serif);
+  --font-body: var(--font-body-font, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  --font-hand: var(--font-hand-font, "Caveat", "Dancing Script", "Segoe Print", cursive);
+
+  /* Measurements & Radii */
+  --page-radius: 8px;
+  --cover-radius: 12px;
+  --photo-border: 8px solid #ffffff;
+  --photo-shadow: 0 8px 20px -3px rgba(38, 27, 23, 0.22), 0 3px 8px -2px rgba(38, 27, 23, 0.12);
+  --book-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.75), 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+
+  /* Texture & Timing */
+  --paper-texture: radial-gradient(#ebe1ce 1px, transparent 1px);
+  --flip-speed: 800ms;
+}
