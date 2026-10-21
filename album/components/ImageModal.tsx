@@ -40,7 +40,7 @@ export const ImageModal: React.FC<ImageModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
       onClick={(e) => {
         e.stopPropagation();
         onClose();
@@ -48,7 +48,7 @@ export const ImageModal: React.FC<ImageModalProps> = ({
     >
       {/* Modal Card */}
       <div
-        className="bg-paper text-ink p-4 sm:p-6 rounded-page shadow-book max-w-2xl w-full relative flex flex-col items-center border border-paper-edge animate-in zoom-in-95 duration-200"
+        className="bg-paper text-ink p-3 sm:p-5 rounded-page shadow-book max-w-5xl w-full max-h-[94vh] relative flex flex-col items-center border border-paper-edge animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -91,41 +91,43 @@ export const ImageModal: React.FC<ImageModalProps> = ({
           </button>
         )}
 
-        {/* High-Res Photo Container */}
-        <div className="relative w-full aspect-4/3 rounded-xs overflow-hidden shadow-photo bg-stone-100">
+        {/* High-Res Photo Container - Flexible & Uncropped */}
+        <div className="relative w-full h-[62vh] sm:h-[75vh] rounded-xs overflow-hidden shadow-photo bg-stone-900/10 flex items-center justify-center">
           <Image
             src={photo.src}
             alt={photo.alt || "Album photo"}
             fill
-            sizes="(max-width: 768px) 90vw, 650px"
-            className="object-cover"
+            sizes="(max-width: 768px) 95vw, 1200px"
+            className="object-contain"
             priority
           />
         </div>
 
         {/* Polaroid Caption & Metadata */}
-        <div className="w-full mt-4 flex flex-col items-center text-center">
-          {photo.caption && (
-            <p className="font-hand text-2xl sm:text-3xl text-accent leading-snug">
-              {photo.caption}
-            </p>
-          )}
+        {(photo.caption || photo.location || photo.date) && (
+          <div className="w-full mt-3 flex flex-col items-center text-center shrink-0">
+            {photo.caption && (
+              <p className="font-hand text-xl sm:text-2xl text-accent leading-snug">
+                {photo.caption}
+              </p>
+            )}
 
-          <div className="flex items-center gap-3 mt-2 font-mono text-[11px] text-ink-muted">
-            {photo.location && (
-              <span className="flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-accent" />
-                <span>{photo.location}</span>
-              </span>
-            )}
-            {photo.date && (
-              <span className="flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-cover-accent" />
-                <span>{photo.date}</span>
-              </span>
-            )}
+            <div className="flex items-center gap-3 mt-1.5 font-mono text-[11px] text-ink-muted">
+              {photo.location && (
+                <span className="flex items-center gap-1">
+                  <MapPin className="w-3 h-3 text-accent" />
+                  <span>{photo.location}</span>
+                </span>
+              )}
+              {photo.date && (
+                <span className="flex items-center gap-1">
+                  <Calendar className="w-3 h-3 text-cover-accent" />
+                  <span>{photo.date}</span>
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -72,13 +72,13 @@ export const PhotoSlot: React.FC<PhotoSlotProps> = ({
 
       {/* Frame Container */}
       <div
-        className={`w-full h-full flex flex-col p-1.5 sm:p-2.5 transition-shadow duration-300 relative overflow-hidden ${isCover
+        className={`w-full h-full flex flex-col p-1 sm:p-1.5 transition-shadow duration-300 relative overflow-hidden ${isCover
             ? "bg-cover border-2 border-cover-accent/60 shadow-book rounded-cover"
             : "bg-white photo-card rounded-page"
           }`}
       >
         {/* Photo Container */}
-        <div className="relative w-full flex-1 min-h-0 bg-stone-100 overflow-hidden rounded-xs">
+        <div className="relative w-full h-full flex-1 min-h-0 bg-stone-100 overflow-hidden rounded-xs">
           {photo?.src ? (
             <>
               {/* Blur Loading Skeleton */}
@@ -105,20 +105,6 @@ export const PhotoSlot: React.FC<PhotoSlotProps> = ({
             </div>
           )}
         </div>
-
-        {/* Polaroid Handwritten Caption Strip */}
-        {photo?.caption && !isCover && (
-          <div className="pt-1.5 pb-0.5 px-1 text-center shrink-0">
-            <p className="font-hand text-xs sm:text-sm text-ink truncate max-w-full">
-              {photo.caption}
-            </p>
-            {photo.date && (
-              <span className="block font-mono text-[9px] text-ink-muted/80">
-                {photo.date}
-              </span>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
