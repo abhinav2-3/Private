@@ -9,6 +9,7 @@ interface TextItemRendererProps {
 
 export const TextItemRenderer: React.FC<TextItemRendererProps> = ({ item }) => {
   const { x, y, text, style = "hand", fontSize, rotation = 0, maxWidth, color } = item;
+  const isCentered = x === 50 || x === 100 || x === 150;
 
   // Determine font and style classes
   const getStyleClasses = () => {
@@ -29,7 +30,18 @@ export const TextItemRenderer: React.FC<TextItemRendererProps> = ({ item }) => {
     }
   };
 
-  const isCentered = x === 50 || x === 100 || x === 150;
+  // Make font size classes responsive so text doesn't overflow on small pages
+  const getResponsiveFontClass = (rawFont?: string) => {
+    if (!rawFont) return "text-xs sm:text-sm md:text-base";
+    return rawFont
+      .replace(/\btext-4xl\b/g, "text-2xl sm:text-3xl md:text-4xl")
+      .replace(/\btext-3xl\b/g, "text-xl sm:text-2xl md:text-3xl")
+      .replace(/\btext-2xl\b/g, "text-base sm:text-xl md:text-2xl")
+      .replace(/\btext-xl\b/g, "text-sm sm:text-base md:text-xl")
+      .replace(/\btext-lg\b/g, "text-xs sm:text-sm md:text-lg")
+      .replace(/\btext-sm\b/g, "text-[11px] sm:text-xs md:text-sm")
+      .replace(/\btext-\[10px\]\b/g, "text-[8px] sm:text-[9px] md:text-[10px]");
+  };
 
   return (
     <div
@@ -43,7 +55,7 @@ export const TextItemRenderer: React.FC<TextItemRendererProps> = ({ item }) => {
         width: maxWidth ? `${(maxWidth / 200) * 100}%` : undefined,
       }}
     >
-      <div className={fontSize || "text-base"}>{text}</div>
+      <div className={getResponsiveFontClass(fontSize)}>{text}</div>
     </div>
   );
 };

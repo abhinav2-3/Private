@@ -8,7 +8,6 @@ import { BookPage } from "./BookPage";
 import { SpreadCanvas } from "./SpreadCanvas";
 
 // Dynamically import HTMLFlipBook to disable SSR
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const HTMLFlipBook = dynamic(() => import("react-pageflip"), {
   ssr: false,
   loading: () => (
@@ -17,7 +16,8 @@ const HTMLFlipBook = dynamic(() => import("react-pageflip"), {
       <span className="font-title text-cover-accent text-lg">Opening Keepsake Album...</span>
     </div>
   ),
-}) as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}) as React.ComponentType<any>;
 
 export interface BookHandle {
   flipNext: () => void;
@@ -32,14 +32,28 @@ interface BookProps {
   onPageChange?: (currentPage: number, totalPages: number) => void;
   onPhotoClick?: (photo: PhotoItem) => void;
   className?: string;
+  initialPage?: number;
 }
 
 export const Book = forwardRef<BookHandle, BookProps>(
-  ({ spreads, onPageChange, onPhotoClick, className = "" }, ref) => {
+  ({ spreads, onPageChange, onPhotoClick, className = "", initialPage = 0 }, ref) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const bookRef = useRef<any>(null);
+    const touchStartX = useRef<number | null>(null);
+    const touchStartY = useRef<number | null>(null);
     const { width, height, isMobile, mounted } = useBookSize();
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(initialPage);
+
+    useEffect(() => {
+      if (typeof initialPage === "number" && bookRef.current) {
+        try {
+          bookRef.current.pageFlip()?.flip(initialPage);
+          setCurrentPage(initialPage);
+        } catch {
+          // ignore
+        }
+      }
+    }, [initialPage]);
 
     // Cover spread is index 0, back-cover is the last spread
     const coverSpread = spreads[0];
@@ -88,29 +102,53 @@ export const Book = forwardRef<BookHandle, BookProps>(
       );
     }
 
+    // Touch swipe handlers
+    const handleTouchStart = (e: React.TouchEvent) => {
+      touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+      if (touchStartX.current === null || touchStartY.current === null) return;
+      const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+      const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+      if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX < 0) {
+          bookRef.current?.pageFlip()?.flipNext();
+        } else {
+          bookRef.current?.pageFlip()?.flipPrev();
+        }
+      }
+      touchStartX.current = null;
+      touchStartY.current = null;
+    };
+
     return (
       <div
-        className={`relative flex items-center justify-center select-none ${className}`}
+        className={`relative flex items-center justify-center select-none touch-pan-y ${className}`}
         style={{
           width: isMobile ? width : width * 2,
           height,
         }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         <HTMLFlipBook
+          key={`book-${width}-${height}-${isMobile}-${initialPage}`}
           ref={bookRef}
           width={width}
           height={height}
           size="fixed"
-          minWidth={280}
-          maxWidth={600}
-          minHeight={370}
-          maxHeight={800}
+          minWidth={200}
+          maxWidth={800}
+          minHeight={260}
+          maxHeight={1000}
           maxShadowOpacity={0.55}
           showCover={true}
           mobileScrollSupport={false}
-          flippingTime={750}
+          flippingTime={600}
           usePortrait={isMobile}
-          startPage={0}
+          startPage={initialPage}
           drawShadow={true}
           clickEventForward={true}
           useMouseEvents={true}

@@ -21,21 +21,25 @@ export function useBookSize(): BookDimensions {
     function calculateSize() {
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
-      const isMobile = windowWidth < 768;
+      // Single page below 960px or portrait orientation
+      const isMobile = windowWidth < 960 || (windowWidth < 1024 && windowHeight > windowWidth);
 
       // Available space with margins for controls and ambient background
-      const availableHeight = Math.max(windowHeight - (isMobile ? 130 : 110), 380);
+      const availableHeight = Math.max(
+        windowHeight - (windowHeight < 640 ? 95 : isMobile ? 115 : 110),
+        280
+      );
       const availableWidth = isMobile
-        ? Math.min(windowWidth - 24, 460)
-        : Math.min(windowWidth - 64, 1150);
+        ? Math.min(windowWidth - (windowWidth < 480 ? 16 : 28), 540)
+        : Math.min(windowWidth - 48, 1200);
 
-      const targetAspectRatio = 1.32; // Height / Width for a single page
+      const targetAspectRatio = 1.30; // Height / Width for a single page
 
       let pageWidth: number;
       let pageHeight: number;
 
       if (isMobile) {
-        // Mobile: 1 page displayed at a time
+        // Mobile / Tablet Portrait: 1 page displayed at a time, maximize viewport
         pageWidth = availableWidth;
         pageHeight = Math.round(pageWidth * targetAspectRatio);
 
@@ -44,7 +48,7 @@ export function useBookSize(): BookDimensions {
           pageWidth = Math.round(pageHeight / targetAspectRatio);
         }
       } else {
-        // Desktop: 2 pages side-by-side
+        // Desktop / Landscape: 2 pages side-by-side
         const maxSpreadWidth = availableWidth;
         const maxSingleWidth = maxSpreadWidth / 2;
 
@@ -58,8 +62,8 @@ export function useBookSize(): BookDimensions {
       }
 
       setDimensions({
-        width: Math.max(Math.round(pageWidth), 280),
-        height: Math.max(Math.round(pageHeight), 370),
+        width: Math.max(Math.round(pageWidth), 240),
+        height: Math.max(Math.round(pageHeight), 310),
         isMobile,
         mounted: true,
       });

@@ -39,26 +39,26 @@ export const IntroCurtain: React.FC<IntroCurtainProps> = ({ onOpen }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/95 backdrop-blur-md">
       {/* Vintage Envelope Keepsake Card */}
-      <div className="w-full max-w-lg bg-cover border-2 border-cover-accent/40 rounded-cover p-8 sm:p-12 shadow-book text-center relative overflow-hidden flex flex-col items-center">
+      <div className="w-full max-w-lg bg-cover border-2 border-cover-accent/40 rounded-cover p-5 sm:p-10 shadow-book text-center relative overflow-hidden flex flex-col items-center">
         {/* Ornate Gold Border */}
-        <div className="absolute inset-3 border border-cover-accent/20 rounded-cover pointer-events-none" />
+        <div className="absolute inset-2 sm:inset-3 border border-cover-accent/20 rounded-cover pointer-events-none" />
 
         {/* Small Wax Seal Badge */}
-        <div className="w-12 h-12 rounded-full bg-linear-to-tr from-amber-700 via-amber-500 to-amber-200 border-2 border-amber-900/40 shadow-md flex items-center justify-center mb-6">
-          <span className="font-title text-stone-900 font-bold text-lg select-none">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-linear-to-tr from-amber-700 via-amber-500 to-amber-200 border-2 border-amber-900/40 shadow-md flex items-center justify-center mb-3 sm:mb-5">
+          <span className="font-title text-stone-900 font-bold text-base sm:text-lg select-none">
             ✦
           </span>
         </div>
 
-        <span className="font-mono text-xs uppercase tracking-widest text-cover-accent/70 mb-2">
+        <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-cover-accent/70 mb-1.5 sm:mb-2">
           A Keepsake Birthday Gift
         </span>
 
-        <h1 className="font-title text-3xl sm:text-4xl font-bold text-cover-accent mb-3 tracking-tight">
+        <h1 className="font-title text-2xl sm:text-4xl font-bold text-cover-accent mb-2 sm:mb-3 tracking-tight">
           Happy Birthday, {siteConfig.recipientName}
         </h1>
 
-        <p className="font-hand text-xl sm:text-2xl text-accent mb-8 max-w-md leading-relaxed">
+        <p className="font-hand text-lg sm:text-2xl text-accent mb-5 sm:mb-8 max-w-md leading-relaxed">
           {siteConfig.coverMessage}
         </p>
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 // Script to generate a soothing romantic acoustic piano chord loop (WAV format)
 const fs = require("fs");
 const path = require("path");

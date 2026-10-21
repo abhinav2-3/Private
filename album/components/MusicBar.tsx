@@ -21,7 +21,7 @@ export const MusicBar: React.FC<MusicBarProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-900/85 backdrop-blur-md border border-stone-800 shadow-md text-stone-200 select-none ${className}`}
+      className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-stone-900/85 backdrop-blur-md border border-stone-800 shadow-md text-stone-200 select-none ${className}`}
     >
       {/* Play/Pause Button */}
       <button
@@ -36,28 +36,28 @@ export const MusicBar: React.FC<MusicBarProps> = ({
         )}
       </button>
 
-      {/* Track Title & Animated Equalizer */}
-      <div className="flex items-center gap-2 px-1 max-w-32.5 sm:max-w-45">
+      {/* Track Title (Hidden on narrow screens to prevent header squishing) */}
+      <div className="hidden sm:flex items-center gap-1.5 max-w-28 sm:max-w-40">
         <Music className="w-3 h-3 text-cover-accent shrink-0" />
         <span className="font-body text-xs text-stone-300 truncate font-medium">
           {siteConfig.music.title}
         </span>
-
-        {/* Animated dancing sound wave bars */}
-        {isPlaying && !isMuted ? (
-          <div className="flex items-end gap-0.5 h-3 shrink-0">
-            <span className="w-0.5 bg-cover-accent rounded-full animate-bounce h-2" style={{ animationDelay: "0ms" }} />
-            <span className="w-0.5 bg-cover-accent rounded-full animate-bounce h-3" style={{ animationDelay: "150ms" }} />
-            <span className="w-0.5 bg-cover-accent rounded-full animate-bounce h-1.5" style={{ animationDelay: "300ms" }} />
-          </div>
-        ) : (
-          <div className="flex items-end gap-0.5 h-3 shrink-0 opacity-40">
-            <span className="w-0.5 bg-stone-500 rounded-full h-1" />
-            <span className="w-0.5 bg-stone-500 rounded-full h-1.5" />
-            <span className="w-0.5 bg-stone-500 rounded-full h-1" />
-          </div>
-        )}
       </div>
+
+      {/* Animated dancing sound wave bars (always visible) */}
+      {isPlaying && !isMuted ? (
+        <div className="flex items-end gap-0.5 h-3 shrink-0 px-0.5">
+          <span className="w-0.5 bg-cover-accent rounded-full animate-bounce h-2" style={{ animationDelay: "0ms" }} />
+          <span className="w-0.5 bg-cover-accent rounded-full animate-bounce h-3" style={{ animationDelay: "150ms" }} />
+          <span className="w-0.5 bg-cover-accent rounded-full animate-bounce h-1.5" style={{ animationDelay: "300ms" }} />
+        </div>
+      ) : (
+        <div className="flex items-end gap-0.5 h-3 shrink-0 px-0.5 opacity-40">
+          <span className="w-0.5 bg-stone-500 rounded-full h-1" />
+          <span className="w-0.5 bg-stone-500 rounded-full h-1.5" />
+          <span className="w-0.5 bg-stone-500 rounded-full h-1" />
+        </div>
+      )}
 
       {/* Mute/Unmute Toggle Button */}
       <button
