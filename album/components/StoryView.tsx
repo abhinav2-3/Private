@@ -319,7 +319,34 @@ export const StoryView: React.FC<StoryViewProps> = ({
       );
     }
 
-    // 5. Dynamic layouts based on photo count
+    // 5. Memory Timeline (Spread 9)
+    if (currentSpread.template === "memory-timeline" && currentSpread.photos.length >= 3) {
+      return (
+        <div className="w-full h-full flex flex-col justify-between gap-1.5 py-1">
+          <div className="text-center shrink-0">
+            <h3 className="font-title text-base sm:text-lg font-bold text-ink">
+              Every Chapter Better Than The Last
+            </h3>
+            <p className="font-hand text-xs sm:text-sm text-accent">
+              Three chapters, endless laughter
+            </p>
+          </div>
+          {/* Top 2 Photos */}
+          <div className="grid grid-cols-2 gap-2 flex-1 min-h-0">
+            {renderPhotoCard(currentSpread.photos[0], "h-full", false)}
+            {renderPhotoCard(currentSpread.photos[1], "h-full", false)}
+          </div>
+          {/* Bottom Centered Photo */}
+          <div className="flex-1 min-h-0 flex justify-center">
+            <div className="w-[62%] sm:w-[54%] h-full">
+              {renderPhotoCard(currentSpread.photos[2], "h-full", false)}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 6. Dynamic layouts based on photo count
     const photoCount = currentSpread.photos.length;
 
     // 1 Photo (Single Spotlight)
