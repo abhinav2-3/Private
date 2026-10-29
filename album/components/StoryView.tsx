@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { PhotoItem, SpreadData } from "@/types";
 import { siteConfig } from "@/config/site";
+import { VideoSlot } from "./VideoSlot";
 
 interface StoryViewProps {
   spreads: SpreadData[];
@@ -58,8 +59,10 @@ export const StoryView: React.FC<StoryViewProps> = ({
   }, [activeSpreadIndex, onSpreadChange]);
 
   const jumpTo = (index: number) => {
-    setSlideDirection(index > activeSpreadIndex ? 1 : -1);
-    onSpreadChange(index);
+    if (index !== activeSpreadIndex) {
+      setSlideDirection(index > activeSpreadIndex ? 1 : -1);
+      onSpreadChange(index);
+    }
   };
 
   // Keyboard navigation
@@ -113,6 +116,19 @@ export const StoryView: React.FC<StoryViewProps> = ({
     customClass: string = "h-full w-full",
     showCaption: boolean = true
   ) => {
+    const isVideo =
+      photo.src.endsWith(".mp4") ||
+      photo.src.endsWith(".webm") ||
+      photo.mediaType === "video";
+
+    if (isVideo) {
+      return (
+        <div key={photo.slotId || photo.src} className={`relative ${customClass}`}>
+          <VideoSlot photo={photo} isActive={true} onPhotoClick={onPhotoClick} />
+        </div>
+      );
+    }
+
     return (
       <div
         key={photo.slotId || photo.src}
@@ -129,6 +145,8 @@ export const StoryView: React.FC<StoryViewProps> = ({
             alt={photo.alt || "Keepsake Photo"}
             fill
             sizes="(max-width: 640px) 90vw, 480px"
+            priority={true}
+            loading="eager"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
@@ -198,6 +216,7 @@ export const StoryView: React.FC<StoryViewProps> = ({
                   sizes="260px"
                   className="object-cover"
                   priority
+                  loading="eager"
                 />
               </div>
               <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-stone-900/80 text-white flex items-center justify-center">
@@ -221,25 +240,47 @@ export const StoryView: React.FC<StoryViewProps> = ({
 
     // 2. Back Cover Card
     if (isBackCover) {
+      const backPhoto = currentSpread.photos[0];
       return (
-        <div className="w-full h-full flex flex-col items-center justify-between text-center py-4 px-3">
-          <div className="w-10 h-10 rounded-full bg-linear-to-tr from-amber-700 via-amber-500 to-amber-200 border-2 border-amber-900/40 shadow-md flex items-center justify-center">
-            <span className="font-title text-stone-900 font-bold text-base">✦</span>
-          </div>
-
-          <div className="my-auto px-4 max-w-sm">
-            <h2 className="font-title text-2xl sm:text-3xl font-bold text-cover-accent mb-3">
+        <div className="w-full h-full flex flex-col items-center justify-between text-center py-2 px-3">
+          {/* Top Badge & Title */}
+          <div className="pt-2 flex flex-col items-center">
+            <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-linear-to-tr from-amber-700 via-amber-500 to-amber-200 border-2 border-amber-900/40 shadow-md flex items-center justify-center">
+              <span className="font-title text-stone-900 font-bold text-sm">✦</span>
+            </div>
+            <h2 className="font-title text-2xl sm:text-3xl font-bold text-cover-accent tracking-wide drop-shadow-sm">
               To The Next Chapter
             </h2>
-            <p className="font-hand text-lg sm:text-xl text-accent leading-relaxed">
-              &ldquo;May this year bring you as much happiness, wonder, and magic as you give to the world every single day.&rdquo;
-            </p>
-            <p className="font-title text-xs text-cover-accent/70 mt-4 tracking-widest uppercase">
-              Forever &amp; Always, Yours
-            </p>
           </div>
 
-          <div className="mt-auto flex flex-col items-center gap-2">
+          {/* Attached Photo like front cover page */}
+          {backPhoto && (
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                onPhotoClick(backPhoto);
+              }}
+              className="relative w-44 sm:w-52 aspect-square my-auto rounded-lg overflow-hidden border-2 border-cover-accent/50 shadow-2xl p-1 bg-cover cursor-pointer group hover:scale-105 transition-transform"
+            >
+              <div className="relative w-full h-full rounded-sm overflow-hidden">
+                <Image
+                  src={backPhoto.src}
+                  alt={backPhoto.alt || "Back Cover Photo"}
+                  fill
+                  sizes="260px"
+                  className="object-cover"
+                  priority
+                  loading="eager"
+                />
+              </div>
+              <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-stone-900/80 text-white flex items-center justify-center">
+                <Maximize2 className="w-3 h-3" />
+              </div>
+            </div>
+          )}
+
+          {/* Bottom Replay Action & Seal */}
+          <div className="mt-auto pt-2 flex flex-col items-center gap-2">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -251,7 +292,7 @@ export const StoryView: React.FC<StoryViewProps> = ({
               <span>Replay Keepsake Album</span>
             </button>
             <span className="font-mono text-[10px] text-cover-accent/50">
-              OCTOBER 2026 • HANDCRAFTED WITH LOVE
+              OCTOBER 2026 • HANDCRAFTED WITH ALL MY LOVE
             </span>
           </div>
         </div>
@@ -260,28 +301,48 @@ export const StoryView: React.FC<StoryViewProps> = ({
 
     // 3. Letter & Moments
     if (isLetter) {
-      const p1 = currentSpread.photos[0];
-      const p2 = currentSpread.photos[1];
+      const mediaItem = currentSpread.photos[0];
+      const isVideo =
+        mediaItem?.src &&
+        (mediaItem.src.endsWith(".mp4") ||
+          mediaItem.src.endsWith(".webm") ||
+          mediaItem.mediaType === "video");
+
       return (
-        <div className="w-full h-full flex flex-col justify-between gap-2.5">
+        <div className="w-full h-full flex flex-col justify-between gap-2">
           {/* Parchment Love Note */}
-          <div className="p-3 sm:p-4 rounded-xl bg-amber-50/90 border border-amber-200/80 shadow-xs">
-            <h3 className="font-title text-lg font-bold text-accent mb-1.5 flex items-center gap-1.5">
+          <div className="p-2.5 sm:p-3.5 rounded-xl bg-amber-50/90 border border-amber-200/80 shadow-xs shrink-0">
+            <h3 className="font-title text-base sm:text-lg font-bold text-accent mb-1 flex items-center gap-1.5">
               <span>My Dearest Betu,</span>
               <Heart className="w-3.5 h-3.5 fill-accent text-accent inline" />
             </h3>
             <p className="font-body text-xs sm:text-sm text-ink leading-relaxed">
               Another year around the sun, and your light only grows more radiant. Thank you for your kindness, your boundless optimism, and for turning every single ordinary Tuesday into an adventure I never want to end. Happy Birthday, my love.
             </p>
-            <p className="font-hand text-right text-base sm:text-lg text-accent mt-2">
+            <p className="font-hand text-right text-sm sm:text-base text-accent mt-1">
               — Forever &amp; Always, Yours.
             </p>
           </div>
 
-          {/* 2 Photos Side by Side */}
-          <div className="grid grid-cols-2 gap-2 flex-1 min-h-0">
-            {p1 && renderPhotoCard(p1, "h-full", false)}
-            {p2 && renderPhotoCard(p2, "h-full", false)}
+          {/* Video or Photos */}
+          <div className="flex-1 min-h-0 w-full flex items-center justify-center">
+            {isVideo && mediaItem ? (
+              <div className="w-full h-full max-h-[46vh]">
+                <VideoSlot
+                  photo={mediaItem}
+                  isActive={true}
+                  onPhotoClick={onPhotoClick}
+                />
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 w-full h-full">
+                {currentSpread.photos.map((p, idx) => (
+                  <div key={p.slotId || idx} className="h-full">
+                    {renderPhotoCard(p, "h-full", false)}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       );
@@ -507,13 +568,13 @@ export const StoryView: React.FC<StoryViewProps> = ({
         />
 
         {/* Animated Story Card */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={currentSpread.id}
-            initial={{ opacity: 0, x: slideDirection * 40 }}
+            initial={{ opacity: 0.2, x: slideDirection * 60 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -slideDirection * 40 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            exit={{ opacity: 0, x: -slideDirection * 60 }}
+            transition={{ duration: 0.22, ease: [0.25, 1, 0.5, 1] }}
             className={`relative w-full h-full max-h-[70vh] sm:max-h-[74vh] p-3 sm:p-4 rounded-2xl shadow-book overflow-hidden flex flex-col justify-between border ${
               isCover || isBackCover
                 ? "bg-cover border-cover-accent/30 text-cover-accent"

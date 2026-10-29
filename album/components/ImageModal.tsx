@@ -93,14 +93,24 @@ export const ImageModal: React.FC<ImageModalProps> = ({
 
         {/* High-Res Photo Container - Flexible & Uncropped */}
         <div className="relative w-full h-[62vh] sm:h-[75vh] rounded-xs overflow-hidden shadow-photo bg-stone-900/10 flex items-center justify-center">
-          <Image
-            src={photo.src}
-            alt={photo.alt || "Album photo"}
-            fill
-            sizes="(max-width: 768px) 95vw, 1200px"
-            className="object-contain"
-            priority
-          />
+          {photo.src.endsWith(".mp4") || photo.src.endsWith(".webm") || photo.mediaType === "video" ? (
+            <video
+              src={photo.src}
+              controls
+              autoPlay
+              playsInline
+              className="max-h-full max-w-full rounded-xs object-contain"
+            />
+          ) : (
+            <Image
+              src={photo.src}
+              alt={photo.alt || "Album photo"}
+              fill
+              sizes="(max-width: 768px) 95vw, 1200px"
+              className="object-contain"
+              priority
+            />
+          )}
         </div>
 
         {/* Polaroid Caption & Metadata */}

@@ -1,24 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { PhotoItem, Slot } from "@/types";
+import { VideoSlot } from "./VideoSlot";
 
 interface PhotoSlotProps {
   slot: Slot;
   photo?: PhotoItem;
   onPhotoClick?: (photo: PhotoItem) => void;
   isCover?: boolean;
+  isActive?: boolean;
 }
 
-export const PhotoSlot: React.FC<PhotoSlotProps> = ({
+export const PhotoSlot = React.memo<PhotoSlotProps>(function PhotoSlot({
   slot,
   photo,
   onPhotoClick,
   isCover = false,
-}) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
+  isActive = false,
+}) {
   const rotation = slot.rotation ?? 0;
+
+  const isVideo =
+    photo?.src &&
+    (photo.src.endsWith(".mp4") ||
+      photo.src.endsWith(".webm") ||
+      photo.mediaType === "video");
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -54,6 +62,29 @@ export const PhotoSlot: React.FC<PhotoSlotProps> = ({
     }
   };
 
+  if (isVideo && photo) {
+    return (
+      <div
+        className="absolute flex flex-col items-center group transition-transform duration-300 hover:scale-[1.01] hover:z-30"
+        style={{
+          left: `${(slot.x / 200) * 100}%`,
+          top: `${slot.y}%`,
+          width: `${(slot.width / 200) * 100}%`,
+          height: `${slot.height}%`,
+          transform: `rotate(${rotation}deg)`,
+          zIndex: slot.zIndex || 10,
+        }}
+      >
+        {renderWashiTape()}
+        <VideoSlot
+          photo={photo}
+          isActive={isActive}
+          onPhotoClick={onPhotoClick}
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className="absolute flex flex-col items-center group cursor-pointer transition-transform duration-300 hover:scale-[1.02] hover:z-30"
@@ -80,23 +111,15 @@ export const PhotoSlot: React.FC<PhotoSlotProps> = ({
         {/* Photo Container */}
         <div className="relative w-full h-full flex-1 min-h-0 bg-stone-100 overflow-hidden rounded-xs">
           {photo?.src ? (
-            <>
-              {/* Blur Loading Skeleton */}
-              {!imageLoaded && (
-                <div className="absolute inset-0 bg-stone-200 animate-pulse flex items-center justify-center">
-                  <span className="font-hand text-sm text-stone-400">Loading memory...</span>
-                </div>
-              )}
-              <Image
-                src={photo.src}
-                alt={photo.alt || "Album photo"}
-                fill
-                sizes="(max-width: 768px) 50vw, 33vw"
-                className={`object-cover transition-all duration-500 group-hover:scale-105 ${imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"
-                  }`}
-                onLoad={() => setImageLoaded(true)}
-              />
-            </>
+            <Image
+              src={photo.src}
+              alt={photo.alt || "Album photo"}
+              fill
+              sizes="(max-width: 768px) 50vw, 33vw"
+              priority={true}
+              loading="eager"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center p-3 text-center border border-dashed border-stone-300">
               <span className="font-hand text-stone-400 text-sm sm:text-base">
@@ -108,4 +131,4 @@ export const PhotoSlot: React.FC<PhotoSlotProps> = ({
       </div>
     </div>
   );
-};
+});

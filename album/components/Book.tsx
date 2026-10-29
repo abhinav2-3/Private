@@ -170,6 +170,20 @@ export const Book = forwardRef<BookHandle, BookProps>(
           {innerSpreads.map((spread, index) => {
             const leftPageNum = 1 + index * 2;
             const rightPageNum = leftPageNum + 1;
+            const hasVideo = spread.photos.some(
+              (p) => p.mediaType === "video" || p.src?.endsWith(".mp4")
+            );
+            const isLeftActive =
+              hasVideo &&
+              (isMobile
+                ? currentPage === leftPageNum
+                : currentPage === leftPageNum || currentPage === rightPageNum);
+            const isRightActive =
+              hasVideo &&
+              (isMobile
+                ? currentPage === rightPageNum
+                : currentPage === leftPageNum || currentPage === rightPageNum);
+
             return [
               <BookPage key={`${spread.id}-left`} isHardCover={false}>
                 <SpreadCanvas
@@ -177,6 +191,7 @@ export const Book = forwardRef<BookHandle, BookProps>(
                   side="left"
                   pageNumber={leftPageNum}
                   onPhotoClick={onPhotoClick}
+                  isActive={isLeftActive}
                 />
               </BookPage>,
               <BookPage key={`${spread.id}-right`} isHardCover={false}>
@@ -185,6 +200,7 @@ export const Book = forwardRef<BookHandle, BookProps>(
                   side="right"
                   pageNumber={rightPageNum}
                   onPhotoClick={onPhotoClick}
+                  isActive={isRightActive}
                 />
               </BookPage>,
             ];

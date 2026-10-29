@@ -87,6 +87,7 @@ export interface PhotoItem {
   x?: number; // override slot x position
   y?: number; // override slot y position
   rotation?: number; // override slot rotation angle
+  mediaType?: "image" | "video";
 }
 
 export interface SpreadData {

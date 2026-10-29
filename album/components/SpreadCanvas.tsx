@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { PhotoItem, SpreadData } from "@/types";
 import { TEMPLATE_LAYOUTS } from "@/config/layouts";
 import { PhotoSlot } from "./PhotoSlot";
@@ -13,32 +13,55 @@ interface SpreadCanvasProps {
   onPhotoClick?: (photo: PhotoItem) => void;
   className?: string;
   pageNumber?: number;
+  isActive?: boolean;
 }
 
-export const SpreadCanvas: React.FC<SpreadCanvasProps> = ({
+export const SpreadCanvas = React.memo<SpreadCanvasProps>(function SpreadCanvas({
   spread,
   side = "full",
   onPhotoClick,
   className = "",
   pageNumber,
-}) => {
+  isActive = false,
+}) {
   const layout = TEMPLATE_LAYOUTS[spread.template] || TEMPLATE_LAYOUTS["single-spotlight"];
   const isCover = spread.template === "cover";
   const isBackCover = spread.template === "back-cover";
   const isLeather = isCover || isBackCover;
 
   // Combine template default texts with spread texts
-  const allTexts = [...(layout.defaultTexts || []), ...(spread.texts || [])];
-  // Deduplicate by text id, favoring spread.texts
-  const textsMap = new Map<string, (typeof allTexts)[0]>();
-  allTexts.forEach((t) => textsMap.set(t.id, t));
-  const texts = Array.from(textsMap.values());
+  const texts = useMemo(() => {
+    const allTexts = [...(layout.defaultTexts || []), ...(spread.texts || [])];
+    const textsMap = new Map<string, (typeof allTexts)[0]>();
+    allTexts.forEach((t) => textsMap.set(t.id, t));
+    return Array.from(textsMap.values());
+  }, [layout.defaultTexts, spread.texts]);
 
   // Combine stickers
-  const allStickers = [
-    ...(layout.defaultStickers || []),
-    ...(spread.stickers || []),
-  ];
+  const allStickers = useMemo(() => {
+    return [
+      ...(layout.defaultStickers || []),
+      ...(spread.stickers || []),
+    ];
+  }, [layout.defaultStickers, spread.stickers]);
+
+  // Memoize slots with overrides applied
+  const resolvedSlots = useMemo(() => {
+    return layout.slots.map((baseSlot) => {
+      const photo = spread.photos.find((p) => p.slotId === baseSlot.id);
+      const slot = photo
+        ? {
+            ...baseSlot,
+            width: photo.width ?? baseSlot.width,
+            height: photo.height ?? baseSlot.height,
+            x: photo.x ?? baseSlot.x,
+            y: photo.y ?? baseSlot.y,
+            rotation: photo.rotation ?? baseSlot.rotation,
+          }
+        : baseSlot;
+      return { slot, photo };
+    });
+  }, [layout.slots, spread.photos]);
 
   // Render the inner 200x100 coordinate canvas
   const renderCanvasContent = () => (
@@ -70,28 +93,16 @@ export const SpreadCanvas: React.FC<SpreadCanvasProps> = ({
       )}
 
       {/* Photo Slots */}
-      {layout.slots.map((baseSlot) => {
-        const photo = spread.photos.find((p) => p.slotId === baseSlot.id);
-        const slot = photo
-          ? {
-              ...baseSlot,
-              width: photo.width ?? baseSlot.width,
-              height: photo.height ?? baseSlot.height,
-              x: photo.x ?? baseSlot.x,
-              y: photo.y ?? baseSlot.y,
-              rotation: photo.rotation ?? baseSlot.rotation,
-            }
-          : baseSlot;
-        return (
-          <PhotoSlot
-            key={slot.id}
-            slot={slot}
-            photo={photo}
-            onPhotoClick={onPhotoClick}
-            isCover={isCover}
-          />
-        );
-      })}
+      {resolvedSlots.map(({ slot, photo }) => (
+        <PhotoSlot
+          key={slot.id}
+          slot={slot}
+          photo={photo}
+          onPhotoClick={onPhotoClick}
+          isCover={isLeather}
+          isActive={isActive}
+        />
+      ))}
 
       {/* Text Layers */}
       {texts.map((textItem) => (
@@ -179,4 +190,4 @@ export const SpreadCanvas: React.FC<SpreadCanvasProps> = ({
       )}
     </div>
   );
-};
+});

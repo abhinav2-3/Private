@@ -48,6 +48,21 @@ export default function HomePage() {
       ? allAlbumPhotos[activePhotoIndex]
       : null;
 
+  // Preload all album photos into browser cache for instantaneous zero-flicker page turns
+  useEffect(() => {
+    allAlbumPhotos.forEach((photo) => {
+      if (
+        photo.src &&
+        !photo.src.endsWith(".mp4") &&
+        !photo.src.endsWith(".webm") &&
+        photo.mediaType !== "video"
+      ) {
+        const img = new Image();
+        img.src = photo.src;
+      }
+    });
+  }, [allAlbumPhotos]);
+
   // Convert book page index (0..21) to spread index (0..11)
   const pageToSpread = (page: number): number => {
     if (page <= 0) return 0;
