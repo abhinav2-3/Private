@@ -5,7 +5,7 @@ export const siteConfig: SiteConfig = {
   senderName: "Abhinav",
   albumTitle: "Happy Birthday, My Love",
   subtitle: "A Keepsake Collection of Captured Moments",
-  date: "October 14, 2026",
+  date: "November, 08 2026",
   coverMessage:
     "Every photograph is a doorway to a moment I never want to forget with you.",
   music: {

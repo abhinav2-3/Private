@@ -292,7 +292,7 @@ export const StoryView: React.FC<StoryViewProps> = ({
               <span>Replay Keepsake Album</span>
             </button>
             <span className="font-mono text-[10px] text-cover-accent/50">
-              OCTOBER 2026 • HANDCRAFTED WITH ALL MY LOVE
+              NOVEMBER 2026 • HANDCRAFTED WITH ALL MY LOVE
             </span>
           </div>
         </div>
@@ -311,7 +311,7 @@ export const StoryView: React.FC<StoryViewProps> = ({
       return (
         <div className="w-full h-full flex flex-col justify-between gap-2">
           {/* Parchment Love Note */}
-          <div className="p-2.5 sm:p-3.5 rounded-xl bg-amber-50/90 border border-amber-200/80 shadow-xs shrink-0">
+          {/* <div className="p-2.5 sm:p-3.5 rounded-xl bg-amber-50/90 border border-amber-200/80 shadow-xs shrink-0">
             <h3 className="font-title text-base sm:text-lg font-bold text-accent mb-1 flex items-center gap-1.5">
               <span>My Dearest Betu,</span>
               <Heart className="w-3.5 h-3.5 fill-accent text-accent inline" />
@@ -322,7 +322,7 @@ export const StoryView: React.FC<StoryViewProps> = ({
             <p className="font-hand text-right text-sm sm:text-base text-accent mt-1">
               — Forever &amp; Always, Yours.
             </p>
-          </div>
+          </div> */}
 
           {/* Video or Photos */}
           <div className="flex-1 min-h-0 w-full flex items-center justify-center">
@@ -482,9 +482,8 @@ export const StoryView: React.FC<StoryViewProps> = ({
           {currentSpread.photos.map((p, idx) => (
             <div
               key={p.slotId || idx}
-              className={`h-full min-h-0 ${
-                idx % 2 === 0 ? "-rotate-0.5" : "rotate-0.5"
-              }`}
+              className={`h-full min-h-0 ${idx % 2 === 0 ? "-rotate-0.5" : "rotate-0.5"
+                }`}
             >
               {renderPhotoCard(p, "h-full", false)}
             </div>
@@ -538,13 +537,12 @@ export const StoryView: React.FC<StoryViewProps> = ({
               className="flex-1 h-1.5 rounded-full overflow-hidden transition-all duration-300 cursor-pointer bg-stone-800"
             >
               <div
-                className={`h-full transition-all duration-300 rounded-full ${
-                  idx < activeSpreadIndex
-                    ? "bg-cover-accent opacity-90"
-                    : idx === activeSpreadIndex
+                className={`h-full transition-all duration-300 rounded-full ${idx < activeSpreadIndex
+                  ? "bg-cover-accent opacity-90"
+                  : idx === activeSpreadIndex
                     ? "bg-cover-accent shadow-xs shadow-cover-accent"
                     : "bg-stone-700/40"
-                }`}
+                  }`}
               />
             </button>
           ))}
@@ -575,11 +573,10 @@ export const StoryView: React.FC<StoryViewProps> = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -slideDirection * 60 }}
             transition={{ duration: 0.22, ease: [0.25, 1, 0.5, 1] }}
-            className={`relative w-full h-full max-h-[70vh] sm:max-h-[74vh] p-3 sm:p-4 rounded-2xl shadow-book overflow-hidden flex flex-col justify-between border ${
-              isCover || isBackCover
-                ? "bg-cover border-cover-accent/30 text-cover-accent"
-                : "paper-surface border-paper-edge text-ink"
-            }`}
+            className={`relative w-full h-full max-h-[70vh] sm:max-h-[74vh] p-3 sm:p-4 rounded-2xl shadow-book overflow-hidden flex flex-col justify-between border ${isCover || isBackCover
+              ? "bg-cover border-cover-accent/30 text-cover-accent"
+              : "paper-surface border-paper-edge text-ink"
+              }`}
           >
             {/* Washi tape accents on top corners for scrapbook cards */}
             {!isCover && !isBackCover && (
