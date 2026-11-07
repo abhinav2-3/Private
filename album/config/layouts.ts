@@ -206,7 +206,7 @@ export const TEMPLATE_LAYOUTS: Record<TemplateName, TemplateLayout> = {
         rotation: -3,
         tape: "top-left",
         aspectRatio: "square",
-        captionPlaceholder: "Morning coffee vibes",
+        // captionPlaceholder: "Morning coffee vibes",
       },
       {
         id: "quad-2",

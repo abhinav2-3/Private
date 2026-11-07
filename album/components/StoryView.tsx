@@ -354,14 +354,14 @@ export const StoryView: React.FC<StoryViewProps> = ({
       return (
         <div className="w-full h-full flex flex-col justify-between py-1">
           {/* Top Title */}
-          <div className="text-center pt-1 pb-2">
+          {/* <div className="text-center pt-1 pb-2">
             <h3 className="font-title text-lg sm:text-xl font-bold text-ink">
               The Horizon Looks Brighter With You
             </h3>
             <p className="font-hand text-sm sm:text-base text-accent">
               Standing together, looking out at everything ahead
             </p>
-          </div>
+          </div> */}
 
           {/* Panoramic Hero Photo */}
           <div className="flex-1 w-full my-auto">
@@ -384,14 +384,14 @@ export const StoryView: React.FC<StoryViewProps> = ({
     if (currentSpread.template === "memory-timeline" && currentSpread.photos.length >= 3) {
       return (
         <div className="w-full h-full flex flex-col justify-between gap-1.5 py-1">
-          <div className="text-center shrink-0">
+          {/* <div className="text-center shrink-0">
             <h3 className="font-title text-base sm:text-lg font-bold text-ink">
               Every Chapter Better Than The Last
             </h3>
             <p className="font-hand text-xs sm:text-sm text-accent">
               Three chapters, endless laughter
             </p>
-          </div>
+          </div> */}
           {/* Top 2 Photos */}
           <div className="grid grid-cols-2 gap-2 flex-1 min-h-0">
             {renderPhotoCard(currentSpread.photos[0], "h-full", false)}

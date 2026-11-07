@@ -12,6 +12,7 @@
     "@types/canvas-confetti": "^1.9.0",
     "@types/howler": "^2.2.13",
     "canvas-confetti": "^1.9.4",
+    "falling-leaves": "^0.1.0",
     "framer-motion": "^14.2.0",
     "howler": "^2.2.4",
     "lucide-react": "^1.57.0",

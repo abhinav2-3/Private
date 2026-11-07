@@ -9,6 +9,7 @@ import { IntroCurtain } from "@/components/IntroCurtain";
 import { MusicBar } from "@/components/MusicBar";
 import { FullscreenButton } from "@/components/FullscreenButton";
 import { ImageModal } from "@/components/ImageModal";
+import { FallingLeavesOverlay } from "@/components/FallingLeavesOverlay";
 import { useMusicPlayer } from "@/hooks/useMusicPlayer";
 import { PhotoItem } from "@/types";
 
@@ -20,6 +21,7 @@ export default function HomePage() {
   const [totalPages, setTotalPages] = useState(22);
   const [hasOpenedIntro, setHasOpenedIntro] = useState(false);
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
+  const [showLeaves, setShowLeaves] = useState(true);
 
   // Background music hook
   const music = useMusicPlayer({
@@ -221,9 +223,25 @@ export default function HomePage() {
             </div>
           )}
 
+          {/* Autumn Leaves Toggle */}
+          <button
+            onClick={() => setShowLeaves((prev) => !prev)}
+            title={showLeaves ? "Disable falling leaves" : "Enable falling autumn leaves"}
+            className={`p-2 rounded-full border backdrop-blur-md transition-all shadow-sm flex items-center justify-center cursor-pointer ${
+              showLeaves
+                ? "bg-amber-950/40 text-amber-300 border-amber-700/50 hover:bg-amber-900/50"
+                : "bg-stone-900/80 text-stone-500 border-stone-800 hover:text-stone-300 hover:bg-stone-800"
+            }`}
+          >
+            <span className="text-sm leading-none">🍂</span>
+          </button>
+
           <FullscreenButton />
         </div>
       </header>
+
+      {/* Autumn Falling Leaves Overlay */}
+      <FallingLeavesOverlay enabled={showLeaves} />
 
       {/* Centered Main Stage: Book or StoryView */}
       <main className="flex-1 w-full flex items-center justify-center my-auto relative z-20 min-h-0 overflow-hidden">
